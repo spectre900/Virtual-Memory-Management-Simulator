@@ -80,7 +80,7 @@ void readProcessList(string inputFileName){
 
   }
 
-  cout<<"Number of Process Trace Read : "<<processes.size()<<endl;
+  cout<<"Number of Processes Read : "<<processes.size()<<endl;
   
   file.close();
 

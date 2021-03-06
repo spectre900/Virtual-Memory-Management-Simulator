@@ -27,8 +27,8 @@ class Page{
 
 class Process {
   public:
-    int processId;
-    int totalMemory;
+	  int processId;
+	  int totalMemory;
 };
 
 int numProcesses;
@@ -70,11 +70,14 @@ void readProcessList(string inputFileName){
   ifstream file;
   file.open(inputFileName);
 
+  int processId, totalMemory;
 
-  while(!file.eof()){
+  while(file>>processId>>totalMemory){
 
     Process process;
-    file>>process.processId>>process.totalMemory;
+
+    process.processId = processId;
+    process.totalMemory = totalMemory;
 
     processes.push_back(process);
 
@@ -86,20 +89,25 @@ void readProcessList(string inputFileName){
 
 }
 
+
 void readProcessTrace(string inputFileName){
   
   ifstream file;
   file.open(inputFileName);
 
-  while(!file.eof()){
+  int processId, pageNumber;
+
+  while(file>>processId>>pageNumber){
 
     ProcessTraceEntry processTraceEntry;
 
-    file>>processTraceEntry.processId>>processTraceEntry.pageNumber;
+    processTraceEntry.processId = processId;
+    processTraceEntry.pageNumber = pageNumber;
 
     processTraceList.push(processTraceEntry);
 
   }
+
 
   cout<<"Number of Process Trace Read : "<<processTraceList.size()<<endl;
 

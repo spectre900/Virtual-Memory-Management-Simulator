@@ -119,11 +119,9 @@ void readProcessTrace(string inputFileName){
     ProcessTraceEntry processTraceEntry;
 
     processTraceEntry.processId = processId;
-    processTraceEntry.memoryLocation = memoryLocation;
+    processTraceEntry.memoryLocation = memoryLocation-1;
 
-    if(memoryLocation < processes[processId].totalMemory){
-      processTraceList.push(processTraceEntry);
-    }
+    processTraceList.push(processTraceEntry);
 
   }
 

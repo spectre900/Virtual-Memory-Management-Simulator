@@ -1,3 +1,4 @@
+import os
 import subprocess
 
 PAGE_SIZE = 2
@@ -5,7 +6,7 @@ PAGING = 'DEMAND'
 REPLACEMENT = 'FIFO'
 
 PAGE_SIZE = str(PAGE_SIZE)
-subprocess.call(['g++','simulator.cpp'])
+os.system('g++ -I ./ simulator.cpp')
 
 processInfo = ['./a.out', 'plist.txt', 'ptrace.txt', REPLACEMENT, PAGING, PAGE_SIZE]
 

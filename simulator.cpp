@@ -5,7 +5,6 @@ using namespace std;
 using namespace chrono;
 
 #define MEMORY_SIZE 512
-#define PAGE_SIZE 2
 
 const int FIFO  = 0;
 const int LRU   = 1;
@@ -13,6 +12,7 @@ const int CLOCK = 2;
 const int PRE   = 3;
 const int DEMAND= 4;
 
+int pageSize = 2;
 int pagingType = DEMAND;
 int replacementType = FIFO;
 
@@ -139,24 +139,24 @@ void fifoReplace(){
   int firstComeFrame = 0;
   long long firstComeTime = processes[memory[0].processId].pages[memory[0].pageNumber].addedTime;
 
-  for(int i=PAGE_SIZE;i<MEMORY_SIZE;i+=PAGE_SIZE){
+  for(int i=pageSize;i<MEMORY_SIZE;i+=pageSize){
 
       if(processes[memory[i].processId].pages[memory[i].pageNumber].addedTime < firstComeTime){
 
         firstComeTime = processes[memory[i].processId].pages[memory[i].pageNumber].addedTime;
-        firstComeFrame = i/PAGE_SIZE;
+        firstComeFrame = i/pageSize;
 
       }
   }
 
-  int processId = memory[firstComeFrame*PAGE_SIZE].processId;
-  int pageNumber = memory[firstComeFrame*PAGE_SIZE].pageNumber;
+  int processId = memory[firstComeFrame*pageSize].processId;
+  int pageNumber = memory[firstComeFrame*pageSize].pageNumber;
 
-  for(int i=0;i<PAGE_SIZE;i++){
+  for(int i=0;i<pageSize;i++){
 
-    memory[firstComeFrame*PAGE_SIZE+i].occupied = 0;
-    memory[firstComeFrame*PAGE_SIZE+i].processId = -1;
-    memory[firstComeFrame*PAGE_SIZE+i].pageNumber = -1;
+    memory[firstComeFrame*pageSize+i].occupied = 0;
+    memory[firstComeFrame*pageSize+i].processId = -1;
+    memory[firstComeFrame*pageSize+i].pageNumber = -1;
 
   }
 
@@ -172,24 +172,24 @@ void lruReplace(){
   int firstAccessedFrame = 0;
   long long firstAccessedTime = processes[memory[0].processId].pages[memory[0].pageNumber].lastAccessedTime;
 
-  for(int i=PAGE_SIZE;i<MEMORY_SIZE;i+=PAGE_SIZE){
+  for(int i=pageSize;i<MEMORY_SIZE;i+=pageSize){
 
       if(processes[memory[i].processId].pages[memory[i].pageNumber].lastAccessedTime < firstAccessedTime){
 
         firstAccessedTime = processes[memory[i].processId].pages[memory[i].pageNumber].lastAccessedTime;
-        firstAccessedFrame = i/PAGE_SIZE;
+        firstAccessedFrame = i/pageSize;
 
       }
   }
 
-  int processId = memory[firstAccessedFrame*PAGE_SIZE].processId;
-  int pageNumber = memory[firstAccessedFrame*PAGE_SIZE].pageNumber;
+  int processId = memory[firstAccessedFrame*pageSize].processId;
+  int pageNumber = memory[firstAccessedFrame*pageSize].pageNumber;
 
-  for(int i=0;i<PAGE_SIZE;i++){
+  for(int i=0;i<pageSize;i++){
 
-    memory[firstAccessedFrame*PAGE_SIZE+i].occupied = 0;
-    memory[firstAccessedFrame*PAGE_SIZE+i].processId = -1;
-    memory[firstAccessedFrame*PAGE_SIZE+i].pageNumber = -1;
+    memory[firstAccessedFrame*pageSize+i].occupied = 0;
+    memory[firstAccessedFrame*pageSize+i].processId = -1;
+    memory[firstAccessedFrame*pageSize+i].pageNumber = -1;
 
   }
 
@@ -202,25 +202,25 @@ void lruReplace(){
 
 void clockReplace()
 {
-    while(memory[pointer*PAGE_SIZE].usedBit != 0)
+    while(memory[pointer*pageSize].usedBit != 0)
     {
-        for(int i=0; i<PAGE_SIZE; i++){
-          memory[pointer*PAGE_SIZE + i].usedBit = 0;
+        for(int i=0; i<pageSize; i++){
+          memory[pointer*pageSize + i].usedBit = 0;
         }
 
-        int frame_count = MEMORY_SIZE/PAGE_SIZE;
+        int frame_count = MEMORY_SIZE/pageSize;
         pointer=(pointer+1)%frame_count;
     }
 
-    if(memory[pointer*PAGE_SIZE].occupied){
-        int frame_processId = memory[pointer*PAGE_SIZE].processId;
-        int frame_pageNumber = memory[pointer*PAGE_SIZE].pageNumber;
+    if(memory[pointer*pageSize].occupied){
+        int frame_processId = memory[pointer*pageSize].processId;
+        int frame_pageNumber = memory[pointer*pageSize].pageNumber;
 
-        for(int i=0;i<PAGE_SIZE;i++){
+        for(int i=0;i<pageSize;i++){
 
-        memory[pointer*PAGE_SIZE+i].occupied = 0;
-        memory[pointer*PAGE_SIZE+i].processId = -1;
-        memory[pointer*PAGE_SIZE+i].pageNumber = -1;
+        memory[pointer*pageSize+i].occupied = 0;
+        memory[pointer*pageSize+i].processId = -1;
+        memory[pointer*pageSize+i].pageNumber = -1;
 
         }
         
@@ -247,20 +247,20 @@ void load(int processId, int pageNumber){
   bool loaded = false;
 
   if(replacementType==FIFO or replacementType==LRU){
-    for(int i=0;i<MEMORY_SIZE;i+=PAGE_SIZE){
+    for(int i=0;i<MEMORY_SIZE;i+=pageSize){
       if(!memory[i].occupied){
 
         loaded = true;
 
         processes[processId].pageTable[pageNumber].valid = 1;
-        processes[processId].pageTable[pageNumber].frame = i/PAGE_SIZE;
+        processes[processId].pageTable[pageNumber].frame = i/pageSize;
 
         auto elapsed = high_resolution_clock::now() - start;
 
         processes[processId].pages[pageNumber].addedTime = duration_cast<nanoseconds>(elapsed).count();
         processes[processId].pages[pageNumber].lastAccessedTime = duration_cast<nanoseconds>(elapsed).count();
 
-        for(int j=0;j<PAGE_SIZE;j++){
+        for(int j=0;j<pageSize;j++){
 
           memory[i+j].occupied = 1;
           memory[i+j].processId = processId;
@@ -276,18 +276,18 @@ void load(int processId, int pageNumber){
   }
   else if(replacementType==CLOCK){
     
-    if(memory[pointer*PAGE_SIZE].usedBit == 0){
+    if(memory[pointer*pageSize].usedBit == 0){
                 
 
         processes[processId].pageTable[pageNumber].valid = 1;
         processes[processId].pageTable[pageNumber].frame = pointer;
                 
-        for(int i=0;i<PAGE_SIZE;i++){
+        for(int i=0;i<pageSize;i++){
 
-          memory[pointer*PAGE_SIZE+i].occupied = 1;
-          memory[pointer*PAGE_SIZE+i].processId = processId;
-          memory[pointer*PAGE_SIZE+i].pageNumber = pageNumber;
-          memory[pointer*PAGE_SIZE+i].usedBit = 1;
+          memory[pointer*pageSize+i].occupied = 1;
+          memory[pointer*pageSize+i].processId = processId;
+          memory[pointer*pageSize+i].pageNumber = pageNumber;
+          memory[pointer*pageSize+i].usedBit = 1;
 
         }
         loaded = true;
@@ -309,7 +309,7 @@ void load(int processId, int pageNumber){
 int findNext(int processId,int pageNumber)
 {
   int nextPageNumber=-1,flag=0;
-  int pageCount = ceil(float(processes[processId].totalMemory)/PAGE_SIZE);
+  int pageCount = ceil(float(processes[processId].totalMemory)/pageSize);
   for(int i=pageNumber+1;i<pageCount;i++)
   {
     if(!processes[processId].pageTable[i].valid)
@@ -361,6 +361,7 @@ int main(int argc,char* argv[]){
   string processTraceFilename=argv[2];
   string replacementParam =argv[3];
   string pagingParam = argv[4];
+  string pageSizeParam = argv[5];
 
   if(pagingParam=="DEMAND") pagingType=DEMAND;
   else if(pagingParam=="PRE") pagingType=PRE;
@@ -371,6 +372,8 @@ int main(int argc,char* argv[]){
   else if(replacementParam=="CLOCK") replacementType=CLOCK;
   else replacementType=FIFO;
 
+  pageSize = stoi(pageSizeParam);
+
   readProcessList(processListFilename);
   readProcessTrace(processTraceFilename);
 
@@ -378,7 +381,7 @@ int main(int argc,char* argv[]){
 
   for(int i=0;i<numProcesses;i++){
 
-    int pageCount = ceil(float(processes[i].totalMemory)/PAGE_SIZE);
+    int pageCount = ceil(float(processes[i].totalMemory)/pageSize);
 
     processes[i].pages = vector<Page>(pageCount);
 
@@ -401,7 +404,7 @@ int main(int argc,char* argv[]){
     processTraceList.pop();
 
     int processNumber = ptrace.processId;
-    int pageNumber = ptrace.memoryLocation/PAGE_SIZE;
+    int pageNumber = ptrace.memoryLocation/pageSize;
 
 
     if(!processes[processNumber].pageTable[pageNumber].valid){
@@ -415,8 +418,8 @@ int main(int argc,char* argv[]){
 
       int frame = processes[processNumber].pageTable[pageNumber].frame;
 
-      for(int i=0; i<PAGE_SIZE; i++){
-        memory[frame*PAGE_SIZE + i].usedBit = 1;
+      for(int i=0; i<pageSize; i++){
+        memory[frame*pageSize + i].usedBit = 1;
       }
     }
   }

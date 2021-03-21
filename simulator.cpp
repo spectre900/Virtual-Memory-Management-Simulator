@@ -96,23 +96,6 @@ void clockReplace(){
         int frame_count = MEMORY_SIZE/pageSize;
         pointer=(pointer+1)%frame_count;
     }
-
-    if(memory[pointer*pageSize].occupied){
-
-        int frame_processId = memory[pointer*pageSize].processId;
-        int frame_pageNumber = memory[pointer*pageSize].pageNumber;
-
-        for(int i=0;i<pageSize;i++){
-
-        memory[pointer*pageSize+i].occupied = 0;
-        memory[pointer*pageSize+i].processId = -1;
-        memory[pointer*pageSize+i].pageNumber = -1;
-
-        }
-        
-        processes[frame_processId].pageTable[frame_pageNumber].valid = 0;
-        processes[frame_processId].pageTable[frame_pageNumber].frame = -1;
-    }
 }
 
 void replacement(){
@@ -192,6 +175,23 @@ bool lruLoad(int processId, int pageNumber){
 bool clockLoad(int processId, int pageNumber){
 
   if(memory[pointer*pageSize].usedBit == 0){
+  
+    if(memory[pointer*pageSize].occupied){
+
+        int frame_processId = memory[pointer*pageSize].processId;
+        int frame_pageNumber = memory[pointer*pageSize].pageNumber;
+
+        for(int i=0;i<pageSize;i++){
+
+        memory[pointer*pageSize+i].occupied = 0;
+        memory[pointer*pageSize+i].processId = -1;
+        memory[pointer*pageSize+i].pageNumber = -1;
+
+        }
+        
+        processes[frame_processId].pageTable[frame_pageNumber].valid = 0;
+        processes[frame_processId].pageTable[frame_pageNumber].frame = -1;
+    }
                 
     processes[processId].pageTable[pageNumber].valid = 1;
     processes[processId].pageTable[pageNumber].frame = pointer;
@@ -204,6 +204,10 @@ bool clockLoad(int processId, int pageNumber){
       memory[pointer*pageSize+i].usedBit = 1;
 
     }
+    
+    int frame_count = MEMORY_SIZE/pageSize;
+    pointer=(pointer+1)%frame_count;
+    
     return true;
   } 
   return false;

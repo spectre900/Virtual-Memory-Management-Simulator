@@ -105,53 +105,53 @@ frame4.pack()
 frame5.pack()
 frame6.pack()
 
-title = Label(master=frame1,text='VIRTUAL MEMORY MANAGEMENT SIMULATOR',font='Script 35',fg='#23ff0f',bg='black')
+title = Label(master=frame1,text='VIRTUAL MEMORY MANAGEMENT SIMULATOR',font='Roman 35',fg='#23ff0f',bg='black')
 title.pack()
 
-plist_path_label = Label(master=frame2,text='Process list :',font='Script 20',fg='white',bg='black')
+plist_path_label = Label(master=frame2,text='Process list :',font='Roman 20',fg='white',bg='black')
 plist_path_label.pack(side=tk.LEFT,padx=10)
 
 plist_path=StringVar()
-plist_path_entry = Entry(master=frame2,textvariable=plist_path,width=50, font='Script 20')
+plist_path_entry = Entry(master=frame2,textvariable=plist_path,width=50, font='Roman 20')
 plist_path_entry.pack(side=tk.LEFT,padx=10)
 
-plist_btn = Button(master=frame2,text='Browse', font='Script 20',command=select_plist)
+plist_btn = Button(master=frame2,text='Browse', font='Roman 20',command=select_plist)
 plist_btn.pack(side=tk.LEFT,padx=10)
 
-ptrace_path_label = Label(master=frame3,text='Process trace:',font='Script 20',fg='white',bg='black')
+ptrace_path_label = Label(master=frame3,text='Process trace:',font='Roman 20',fg='white',bg='black')
 ptrace_path_label.pack(side=tk.LEFT,padx=10)
 
 ptrace_path=StringVar()
-ptrace_path_entry = Entry(master=frame3,textvariable=ptrace_path,width=50, font='Script 20')
+ptrace_path_entry = Entry(master=frame3,textvariable=ptrace_path,width=50, font='Roman 20')
 ptrace_path_entry.pack(side=tk.LEFT,padx=10)
 
-ptrace_btn = Button(master=frame3,text='Browse', font='Script 20',command=select_ptrace)
+ptrace_btn = Button(master=frame3,text='Browse', font='Roman 20',command=select_ptrace)
 ptrace_btn.pack(side=tk.LEFT,padx=10)
 
 
-label = Label(master=frame4,text='Fetch Policy:',font='Script 20',fg='white',bg='black')
+label = Label(master=frame4,text='Fetch Policy:',font='Roman 20',fg='white',bg='black')
 label.pack(side=tk.LEFT,padx=5)
 
 c1 = StringVar()
-combobox1 = ttk.Combobox(master=frame4,textvariable=c1,font='Script 20', width=10)
+combobox1 = ttk.Combobox(master=frame4,textvariable=c1,font='Roman 20', width=10)
 combobox1['values']=('DEMAND','PRE')
 combobox1.current()
 combobox1.pack(side=tk.LEFT,padx=10)
 
-label = Label(master=frame4,text='Replacement Policy:',font='Script 20',fg='white',bg='black')
+label = Label(master=frame4,text='Replacement Policy:',font='Roman 20',fg='white',bg='black')
 label.pack(side=tk.LEFT,padx=10)
 
 c2 = StringVar()
-combobox2 = ttk.Combobox(master=frame4,textvariable=c2,font='Script 20', width=10)
+combobox2 = ttk.Combobox(master=frame4,textvariable=c2,font='Roman 20', width=10)
 combobox2['values']=('FIFO','LRU','CLOCK')
 combobox2.current()
 combobox2.pack(side=tk.LEFT,padx=10)
 
-label = Label(master=frame5,text='Page Size:',font='Script 20',fg='white',bg='black')
+label = Label(master=frame5,text='Page Size:',font='Roman 20',fg='white',bg='black')
 label.pack(side=tk.LEFT,padx=10)
 
 c3 = IntVar()
-combobox3 = ttk.Combobox(master=frame5,textvariable=c3,font='Script 20', width=10)
+combobox3 = ttk.Combobox(master=frame5,textvariable=c3,font='Roman 20', width=10)
 combobox3['values']=(1,2,4,8,16,32)
 combobox3.current()
 combobox3.pack(side=tk.LEFT,padx=10)
@@ -160,10 +160,10 @@ fetch_policy=''
 replacement_policy=''
 page_size=-1
 
-btn = Button(master=frame6,text='Set Default',font='Script 20',command=setDefault)
+btn = Button(master=frame6,text='Set Default',font='Roman 20',command=setDefault)
 btn.pack(side=tk.LEFT,padx=10)
 
-btn = Button(master=frame6,text='Submit',font='Script 20',command=submit)
+btn = Button(master=frame6,text='Submit',font='Roman 20',command=submit)
 btn.pack(side=tk.LEFT,padx=10)
 
 root.mainloop()

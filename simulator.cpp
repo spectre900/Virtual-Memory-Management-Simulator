@@ -12,11 +12,14 @@ int pageFault;
 int pagingType;
 int numProcesses;
 int replacementType;
+int printDetails;
 int processTraceListSize;
+int counter = 0;
 auto start = chrono::high_resolution_clock::now();
 
 vector<Process> processes;
 vector<MemoryEntry> memory;
+vector<int> pageFaultTracker;
 queue<ProcessTraceEntry> processTraceList;
 
 void fifoReplace(){
@@ -304,6 +307,14 @@ void check(int processNumber, int pageNumber){
 
 void printData(){
   cout<<numProcesses<<' '<<processTraceListSize<<' '<<pageFault;
+
+  if(printDetails)
+  {
+    for(int i=0; i<pageFaultTracker.size(); i++)
+    {
+      cout<<' '<<pageFaultTracker[i];
+    }
+  }
 }
 
 int main(int argc,char* argv[]){
@@ -313,6 +324,7 @@ int main(int argc,char* argv[]){
   string replacementParam     = argv[3];
   string pagingParam          = argv[4];
   string pageSizeParam        = argv[5];
+  string printDetailsParam    = argv[6];
 
   if(pagingParam=="DEMAND"){
     pagingType=DEMAND;
@@ -335,6 +347,13 @@ int main(int argc,char* argv[]){
   }
   else{
     replacementType=FIFO;
+  }
+
+  if(printDetailsParam=="1"){
+    printDetails = 1;
+  }
+  else{
+    printDetails = 0;
   }
 
   {
@@ -366,6 +385,8 @@ int main(int argc,char* argv[]){
     }
   }
 
+  pageFaultTracker.push_back(0);
+
   while(!processTraceList.empty()){
 
     ProcessTraceEntry ptrace = processTraceList.front();
@@ -375,6 +396,19 @@ int main(int argc,char* argv[]){
     int pageNumber = ptrace.memoryLocation/pageSize;
 
     check(processNumber, pageNumber);
+
+    counter++;
+
+    if(counter % 1000 == 0)
+    {
+      pageFaultTracker.push_back(pageFault);
+    }
+
+  }
+
+  if(counter % 1000 != 0)
+  {
+    pageFaultTracker.push_back(pageFault);
   }
 
   printData();

@@ -49,28 +49,12 @@ def submit():
 	global fetch_policy
 	global replacement_policy
 	global page_size
-	global plist_path_var
-	global ptrace_path_var
 	global plist_path
 	global ptrace_path
-
-	plist_path=str(plist_path_var.get())
-	ptrace_path=str(ptrace_path_var.get())
-
-	if len(plist_path)<1 or plist_path[-4:]!='.txt':
-		messagebox.showinfo("Error", "Process List path invalid!")
-		return
-	if len(ptrace_path)<1 or ptrace_path[-4:]!='.txt':
-		messagebox.showinfo("Error", "Process Trace path invalid!")
-		return
 
 	fetch_policy = str(c1.get())
 	replacement_policy = str(c2.get())
 	page_size = int(c3.get())
-
-	if fetch_policy=='' or replacement_policy=='' or page_size=='':
-		messagebox.showinfo("Error","All fields not field!")
-		return
 
 	print(fetch_policy, replacement_policy, plist_path, ptrace_path, page_size, end='')
 
@@ -115,9 +99,8 @@ title.pack()
 plist_path_label = Label(master=frame2,text='Process list :',font='Script 20',fg='white',bg='black')
 plist_path_label.pack(side=tk.LEFT,padx=10)
 
-plist_path_var=StringVar()
-plist_path=''
-plist_path_entry = Entry(master=frame2,textvariable=plist_path_var,width=50, font='Script 20')
+plist_path=StringVar()
+plist_path_entry = Entry(master=frame2,textvariable=plist_path,width=50, font='Script 20')
 plist_path_entry.pack(side=tk.LEFT,padx=10)
 
 plist_btn = Button(master=frame2,text='Browse', font='Script 20',command=select_plist)
@@ -126,9 +109,8 @@ plist_btn.pack(side=tk.LEFT,padx=10)
 ptrace_path_label = Label(master=frame3,text='Process trace:',font='Script 20',fg='white',bg='black')
 ptrace_path_label.pack(side=tk.LEFT,padx=10)
 
-ptrace_path_var=StringVar()
-ptrace_path=''
-ptrace_path_entry = Entry(master=frame3,textvariable=ptrace_path_var,width=50, font='Script 20')
+ptrace_path=StringVar()
+ptrace_path_entry = Entry(master=frame3,textvariable=ptrace_path,width=50, font='Script 20')
 ptrace_path_entry.pack(side=tk.LEFT,padx=10)
 
 ptrace_btn = Button(master=frame3,text='Browse', font='Script 20',command=select_ptrace)

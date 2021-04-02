@@ -4,6 +4,8 @@ import subprocess
 import shutil
 import matplotlib.pyplot as plt
 plt.rcParams['figure.figsize'] = [16, 9]
+plt.rcParams.update({'font.size': 18})
+plt.style.use('dark_background')
 from tkinter import *
 from tkinter.ttk import Progressbar
 
@@ -11,17 +13,8 @@ totalProgress = 0
 CONTR_PROCESS = 7
 CONTR_PLOT = 3
 
+
 def generateStatistics_Plot1():
-    global memoryRequestCount
-    global pageFaultTracker
-
-    countX = list(range(0, memoryRequestCount, 1000))
-    countX.append(memoryRequestCount)
-
-    return countX, pageFaultTracker
-
-
-def generateStatistics_Plot2():
     global pageFaults, PATH_TO_PROCESS_LIST, PATH_TO_PROCESS_TRACE, REPLACEMENT, PAGING
     global totalProgress
 
@@ -46,7 +39,7 @@ def generateStatistics_Plot2():
 
     return pageSizeList, pageFaultList, pageIndex
 
-def generateStatistics_Plot3():
+def generateStatistics_Plot2():
     global pageFaults, PATH_TO_PROCESS_LIST, PATH_TO_PROCESS_TRACE, PAGE_SIZE
     global totalProgress
     
@@ -74,27 +67,10 @@ def generateStatistics_Plot3():
     return combinationList, pageFaultList, mainIndex
 
 
+
 def createPlot1():
     global totalProgress
-    countX, pageFaultTracker = generateStatistics_Plot1()
-
-    plt.plot(countX, pageFaultTracker, color='red')
-    plt.xlim(0)
-    plt.ylim(0)
-    plt.xlabel('Number of Memory Requests')
-    plt.ylabel('Number of Page Faults')
-    plt.title('Number of Page Faults VS Number of Memory requests', fontweight ="bold")
-    plt.grid(b = True, color ='grey', linestyle ='-.', linewidth = 0.5, alpha = 0.8)
-    plt.ticklabel_format(style='plain')
-    plt.savefig('Plots/plot1.png')
-
-    totalProgress += CONTR_PLOT
-    updateProgressBar()
-
-
-def createPlot2():
-    global totalProgress
-    pageSizeList, pageFaultList, pageIndex = generateStatistics_Plot2()
+    pageSizeList, pageFaultList, pageIndex = generateStatistics_Plot1()
     
     # Figure Size
     _, ax = plt.subplots(figsize =(16, 9))
@@ -102,6 +78,8 @@ def createPlot2():
     # Horizontal Bar Plot
     bars = plt.barh(pageSizeList, pageFaultList)  
     bars[pageIndex].set_color('r')  
+    ax.spines['right'].set_color('black')
+    ax.spines['top'].set_color('black')
     ax.xaxis.set_tick_params(pad = 5)
     ax.yaxis.set_tick_params(pad = 10)
     ax.grid(b = True, color ='grey', linestyle ='-.', linewidth = 0.5, alpha = 0.2)
@@ -109,29 +87,32 @@ def createPlot2():
     
     # Add annotation to bars
     for i in ax.patches:
-        plt.text(i.get_width()+0.2, i.get_y()+0.45, str(round((i.get_width()), 2)), fontsize = 11, color ='black')
+        plt.text(i.get_width()+0.2, i.get_y()+0.45, str(round((i.get_width()), 2)), color ='white')
 
-    plt.title('Number of pagefaults VS Page size', fontweight ="bold")
+    # plt.title('Number of pagefaults VS Page size', fontweight ="bold")
     plt.ylabel('Page size')
     plt.xlabel('Number of page faults')
+    plt.tight_layout()
 
     # Save figure
-    plt.savefig('./Plots/plot2.png')
+    plt.savefig('./Plots/plot1.png')
 
     totalProgress += CONTR_PLOT
     updateProgressBar()
 
 
-def createPlot3():
+def createPlot2():
     global totalProgress
-    combinationList, pageFaultList, mainIndex = generateStatistics_Plot3()
+    combinationList, pageFaultList, mainIndex = generateStatistics_Plot2()
 
     # Figure Size
     _, ax = plt.subplots(figsize =(16, 9))
     
     # Horizontal Bar Plot
-    bars = plt.barh(combinationList, pageFaultList)  
+    bars = plt.barh(combinationList, pageFaultList) 
     bars[mainIndex].set_color('r')  
+    ax.spines['right'].set_color('black')
+    ax.spines['top'].set_color('black')
     ax.xaxis.set_tick_params(pad = 5)
     ax.yaxis.set_tick_params(pad = 10)
     ax.grid(b = True, color ='grey', linestyle ='-.', linewidth = 0.5, alpha = 0.2)
@@ -139,14 +120,15 @@ def createPlot3():
     
     # Add annotation to bars
     for i in ax.patches:
-        plt.text(i.get_width()+0.2, i.get_y()+0.45, str(round((i.get_width()), 2)), fontsize = 11, color ='black')
+        plt.text(i.get_width()+0.2, i.get_y()+0.45, str(round((i.get_width()), 2)), color ='white')
 
-    plt.title('Number of pagefaults for different combinations of paging and replacement methods', fontweight ="bold")
+    # plt.title('Number of pagefaults for different paging and replacement methods', fontweight ="bold")
     plt.ylabel('Different combinations of paging and replacement methods')
     plt.xlabel('Number of pagefaults')
+    plt.tight_layout()
 
     # Save figure
-    plt.savefig('./Plots/plot3.png')
+    plt.savefig('./Plots/plot2.png')
 
     totalProgress += CONTR_PLOT
     updateProgressBar()
@@ -200,7 +182,7 @@ def main():
     # Arguments
     argData = sys.argv
 
-    global PAGING, REPLACEMENT, PATH_TO_PROCESS_LIST, PATH_TO_PROCESS_TRACE, PAGE_SIZE, progress
+    global PAGING, REPLACEMENT, PATH_TO_PROCESS_LIST, PATH_TO_PROCESS_TRACE, PAGE_SIZE, progress, totalProgress
 
     PAGING = argData[1]
     REPLACEMENT = argData[2]
@@ -217,8 +199,10 @@ def main():
     # Executing all functions
     executeMainRequest()
     createPlot1()
-    createPlot2()
-    createPlot3()  
+    createPlot2()  
+
+    totalProgress += 3
+    updateProgressBar()
 
     printData()
     ProgressWin.destroy()

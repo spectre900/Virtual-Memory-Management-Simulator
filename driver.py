@@ -36,15 +36,15 @@ def genResults(data):
     return genData
 
 
-# Showing results in GUI 2 -- Not yet done. Uncomment after completion of gui 2
+# Showing results in GUI 2 
 def runGUI2(data):
-    # print('\n[INFO] Displaying results...')
+    print('\n[INFO] Displaying results...')
 
-    # process_info = ['python3', 'gui2.py']
-    # process_info.extend(data)
+    process_info = ['python3', 'gui2.py']
+    process_info.extend(data)
 
-    # process = subprocess.Popen(process_info, stdout=subprocess.PIPE)
-    # process.wait()
+    process = subprocess.Popen(process_info, stdout=subprocess.PIPE)
+    process.wait()
 
     print('\n[INFO] Simulation Completed!')    
 

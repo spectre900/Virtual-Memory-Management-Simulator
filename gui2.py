@@ -7,15 +7,15 @@ from tkinter import messagebox
 
 def displayOutputInCanvas():
     # Creating 4 sub frames inside the master_frame
-    frame1 = Frame(master = master_frame, width = 1540, pady = 10, bg = 'black')
-    frame2 = Frame(master = master_frame, width = 1540, pady = 20, bg = 'black')
-    frame3 = Frame(master = master_frame, width = 1540, pady = 5, bg = 'grey')
-    frame4 = Frame(master = master_frame, width = 1540, pady = 20, bg = 'black')
-    frame5 = Frame(master = master_frame, width = 1540, pady = 10, bg = 'black')
-    frame6 = Frame(master = master_frame, width = 1540, pady = 10, bg = 'black')
-    frame7 = Frame(master = master_frame, width = 1540, pady = 10, bg = 'black')
-    frame8 = Frame(master = master_frame, width = 1540, pady = 10, bg = 'black')
-    frame9 = Frame(master = master_frame, width = 1540, pady = 10, bg = 'black')
+    frame1 = Frame(master = master_frame, width = 1500, pady = 10, bg = 'black')
+    frame2 = Frame(master = master_frame, width = 1500, pady = 20, bg = 'black')
+    frame3 = Frame(master = master_frame, width = 1500, pady = 5, bg = 'grey')
+    frame4 = Frame(master = master_frame, width = 1500, pady = 20, bg = 'black')
+    frame5 = Frame(master = master_frame, width = 1500, pady = 10, bg = 'black')
+    frame6 = Frame(master = master_frame, width = 1500, pady = 10, bg = 'black')
+    frame7 = Frame(master = master_frame, width = 1500, pady = 10, bg = 'black')
+    frame8 = Frame(master = master_frame, width = 1500, pady = 10, bg = 'black')
+    frame9 = Frame(master = master_frame, width = 1500, pady = 10, bg = 'black')
 
     frame1.pack()
     frame2.pack()
@@ -110,7 +110,7 @@ def main():
 
 # Configuring the scroll bar widget and canvas widget
 def scrollbar_function(event):
-    canvas.configure(scrollregion=canvas.bbox("all"),width=1540,height=795)
+    canvas.configure(scrollregion=canvas.bbox("all"),width=1500,height=795)
 
 
 if __name__ == '__main__':

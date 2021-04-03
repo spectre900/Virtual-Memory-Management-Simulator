@@ -3,6 +3,7 @@ import tkinter.filedialog as tkFileDialog
 from tkinter import messagebox
 from tkinter import ttk
 import tkinter as tk
+import os
 
 def select_plist():
 	global plist_path
@@ -62,6 +63,12 @@ def submit():
 		return
 	if len(ptrace_path)<1 or ptrace_path[-4:]!='.txt':
 		messagebox.showinfo("Error", "Process Trace path invalid!")
+		return
+	if os.path.isfile(plist_path) == False:
+		messagebox.showinfo("Error", "Process List file doesn't exist!")
+		return
+	if os.path.isfile(ptrace_path) == False:
+		messagebox.showinfo("Error", "Process Trace file doesn't exist!")
 		return
 
 	fetch_policy = str(c1.get())
@@ -139,7 +146,7 @@ label = Label(master=frame4,text='Fetch Policy:',font='Script 20',fg='white',bg=
 label.pack(side=tk.LEFT,padx=5)
 
 c1 = StringVar()
-combobox1 = ttk.Combobox(master=frame4,textvariable=c1,font='Script 20', width=10)
+combobox1 = ttk.Combobox(master=frame4,textvariable=c1,font='Script 20', width=10, state='readonly')
 combobox1['values']=('DEMAND','PRE')
 combobox1.current()
 combobox1.pack(side=tk.LEFT,padx=10)
@@ -148,7 +155,7 @@ label = Label(master=frame4,text='Replacement Policy:',font='Script 20',fg='whit
 label.pack(side=tk.LEFT,padx=10)
 
 c2 = StringVar()
-combobox2 = ttk.Combobox(master=frame4,textvariable=c2,font='Script 20', width=10)
+combobox2 = ttk.Combobox(master=frame4,textvariable=c2,font='Script 20', width=10, state='readonly')
 combobox2['values']=('FIFO','LRU','CLOCK')
 combobox2.current()
 combobox2.pack(side=tk.LEFT,padx=10)
@@ -157,9 +164,9 @@ label = Label(master=frame5,text='Page Size:',font='Script 20',fg='white',bg='bl
 label.pack(side=tk.LEFT,padx=10)
 
 c3 = IntVar()
-combobox3 = ttk.Combobox(master=frame5,textvariable=c3,font='Script 20', width=10)
+combobox3 = ttk.Combobox(master=frame5,textvariable=c3,font='Script 20', width=10, state='readonly')
 combobox3['values']=(1,2,4,8,16,32)
-combobox3.current()
+combobox3.current(0)
 combobox3.pack(side=tk.LEFT,padx=10)
 
 fetch_policy=''

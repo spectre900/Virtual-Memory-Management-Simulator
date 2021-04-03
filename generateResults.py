@@ -238,7 +238,7 @@ if __name__ == '__main__':
     frame2 = Frame(main_frame, bg='white', pady=5, padx = 5)
 
     frame1.grid(row = 1, column = 1, padx = 5, pady = 5)
-    frame2.grid(row = 2, column = 1, padx = 5, pady = 5)
+    frame2.grid(row = 2, column = 1, padx = 5, pady = (30,10))
 
 
     # Title label in sub_frame1

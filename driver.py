@@ -1,11 +1,11 @@
 import os
 import subprocess
 
-# Running GUI 1
+# Running GUI 1- MenuGUI
 def runGUI1():
     print('\n[INFO] Running GUI 1...')
 
-    process_info = ['python3', 'gui1.py']
+    process_info = ['python3', 'menuGUI.py']
 
     process   = subprocess.Popen(process_info, stdout=subprocess.PIPE)
     dataBytes = process.communicate()[0]
@@ -36,11 +36,11 @@ def genResults(data):
     return genData
 
 
-# Showing results in GUI 2 
+# Showing results in GUI 2- ResultsGUI
 def runGUI2(data):
     print('\n[INFO] Displaying results...')
 
-    process_info = ['python3', 'gui2.py']
+    process_info = ['python3', 'resultsGUI.py']
     process_info.extend(data)
 
     process = subprocess.Popen(process_info, stdout=subprocess.PIPE)
